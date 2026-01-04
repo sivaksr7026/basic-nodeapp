@@ -12,7 +12,11 @@ const app = express()
 const PORT = process.env.PORT || 5000
 
 app.use(express.json())
-app.use(cors({origin:"https://shooping.azurewebsites.net/"}))
+    app.use(cors({
+  origin: ["https://shooping.azurewebsites.net"],
+   methods: ["GET", "POST", "PUT", "DELETE"],
+  credentials: true
+}));
 
 mongoose.connect(process.env.MONGO_URI)
   .then(() => {
