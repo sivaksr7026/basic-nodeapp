@@ -13,7 +13,7 @@ const PORT = process.env.PORT || 5000
 
 app.use(express.json())
     app.use(cors({
-  origin: ["flipcartshopping.azurewebsites.net"],
+  origin: [" https://shooping.azurewebsites.net"],
    methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true
 }));
