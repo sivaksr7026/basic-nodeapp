@@ -12,7 +12,7 @@ const app = express()
 const PORT = process.env.PORT || 5000
 
  app.use(cors({
-  origin: [" https://shoppingapp.azurewebsites.net/"],
+  origin: [" https://shoppingapp.azurewebsites.net"],
    methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true
 }));
