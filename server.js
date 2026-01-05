@@ -9,35 +9,37 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-/* -------------------- Middleware -------------------- */
 app.use(express.json());
 
-/* ✅ SINGLE, SIMPLE CORS CONFIG (Azure-safe) */
+const allowedOrigins = [
+  'https://shoppingapp.azurewebsites.net',
+  'http://localhost:3000'
+];
+
 app.use(
   cors({
-    origin: 'https://shoppingapp.azurewebsites.net',
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error('CORS not allowed'));
+      }
+    },
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization']
   })
 );
 
-/* ✅ Explicitly allow preflight */
-app.options('*', cors());
+mongoose.connect(process.env.MONGO_URI)
+  .then(() => console.log('Connected to MongoDB successfully'))
+  .catch(err => console.error('MongoDB connection error:', err));
 
-/* -------------------- Database -------------------- */
-mongoose
-  .connect(process.env.MONGO_URI)
-  .then(() => console.log('MongoDB connected'))
-  .catch(err => console.error('MongoDB error:', err));
-
-/* -------------------- Routes -------------------- */
 app.use('/employees', employeeRoutes);
 
 app.get('/', (req, res) => {
   res.send('Server is running');
 });
 
-/* -------------------- Start Server -------------------- */
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+  console.log(`Server started on port ${PORT}`);
 });
