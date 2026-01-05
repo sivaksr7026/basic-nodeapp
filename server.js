@@ -21,7 +21,21 @@ app.use(
   })
 );
 
-app.options("*", cors());
+// Define the specific allowed origins
+const allowedOrigins = ['https://shoppingapp.azurewebsites.net/', 'http://localhost:3000'];
+
+const corsOptions = {
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps or curl requests) or from the allowed list
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  }
+};
+
+app.use(cors(corsOptions));
 
 mongoose.connect(process.env.MONGO_URI)
   .then(() => {
