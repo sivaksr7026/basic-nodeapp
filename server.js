@@ -13,7 +13,30 @@ const PORT = process.env.PORT || 5000
 
 app.use(express.json())
 
-app.use(cors({origin:"https://shoppingapp.azurewebsites.net"}))
+app.use(
+  cors({
+    origin: ["https://shoppingapp.azurewebsites.net"],
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: false
+  })
+);
+
+// Define the specific allowed origins
+const allowedOrigins = ['https://shoppingapp.azurewebsites.net/', 'http://localhost:3000'];
+
+const corsOptions = {
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps or curl requests) or from the allowed list
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  }
+};
+
+app.use(cors(corsOptions));
 
 
 
