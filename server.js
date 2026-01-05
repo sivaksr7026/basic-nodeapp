@@ -10,9 +10,13 @@ dotenv.config()
 
 const app = express()
 const PORT = process.env.PORT || 5000
+app.use(express.json());
 
+<<<<<<< HEAD
 app.use(express.json())
 
+=======
+>>>>>>> 2c00ffbb5b7ab3e20cbbdc7953ccccd072b1f820
 app.use(
   cors({
     origin: ["https://shoppingapp.azurewebsites.net"],
@@ -37,8 +41,11 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> 2c00ffbb5b7ab3e20cbbdc7953ccccd072b1f820
 
 mongoose.connect(process.env.MONGO_URI)
   .then(() => {
